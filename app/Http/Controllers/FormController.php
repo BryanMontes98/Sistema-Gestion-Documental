@@ -28,7 +28,7 @@ class FormController extends Controller
             return response()->download(public_path('docs/' . $documento->documento));
         }
     }
-
+// funcion que muestra el formulario y lo procesa
     public function index(Request $request)
     {
 
@@ -154,17 +154,17 @@ class FormController extends Controller
         $validated = $request->validate([
             'documento' => 'required|file|mimes:pdf',
         ]);
-    
+
         if ($request->hasFile('documento')) {
             // Generar un nombre único para el nuevo archivo
             $newFileName = $request->file('documento')->getClientOriginalName();
-            
+
             // Ruta de destino para la carpeta "docs" dentro de "public"
             $destinationPath = public_path('docs');
-    
+
             // Mover el archivo a la carpeta "docs"
             $request->file('documento')->move($destinationPath, $newFileName);
-    
+
             // Actualizar el nombre del archivo en el registro del documento
             $documento->documento = $newFileName;
             $documento->save();
